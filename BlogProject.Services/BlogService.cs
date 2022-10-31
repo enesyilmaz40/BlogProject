@@ -50,6 +50,7 @@ namespace BlogProject.Services
         public async Task<IEnumerable<Blog>> GetListWithCategoryByWriter(int id)
         {
             return await _uow.Blogs.GetListWithCategoryByWriter(id);
+            
         }
 
         public async Task Update(Blog item)
