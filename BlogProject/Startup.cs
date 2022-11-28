@@ -1,6 +1,12 @@
+using BlogProject.Core;
+using BlogProject.Core.Services;
+using BlogProject.Core.Utility.Security.Jwt;
+using BlogProject.Data;
+using BlogProject.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -24,6 +30,24 @@ namespace BlogProject
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            services.AddDbContext<Context>(option => option.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<IAdminService, AdminService>();
+            services.AddScoped<IAppRoleService, AppRoleService>();
+            services.AddScoped<IAppUserService, AppUserService>();
+            services.AddScoped<IBlogService, BlogService>();
+            services.AddScoped<ICategoryService, CategoryService>();
+            services.AddScoped<ICommentService, CommentService>();
+            services.AddScoped<IMessageService, MessageService>();
+            services.AddScoped<INotificationService, NotificationService>();
+            services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<ITokenHelper, JwtHelper>();
+
+
+
+
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -45,6 +69,7 @@ namespace BlogProject
             app.UseRouting();
 
             app.UseAuthorization();
+            app.UseAuthentication();
 
             app.UseEndpoints(endpoints =>
             {

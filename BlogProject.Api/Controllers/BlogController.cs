@@ -23,7 +23,7 @@ namespace BlogProject.Api.Controllers
             _blogService = blogService;
             _appUserService = appUserService;
         }
-
+    
         [HttpGet]
         [Authorize]
         public async Task<IActionResult> BlogGetAll()
