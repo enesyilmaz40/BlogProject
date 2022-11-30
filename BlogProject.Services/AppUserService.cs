@@ -54,6 +54,12 @@ namespace BlogProject.Services
             return userwithmail.FirstOrDefault();
         }
 
+        public AppUser GetByUserName(string userName)
+        {
+            var userwithusername =  _uow.AppUsers.FindQuery(u => u.UserName == userName);
+            return userwithusername.FirstOrDefault();
+        }
+
         public IEnumerable<OperationClaim> GetClaims(AppUser user)
         {
             return  _uow.AppUsers.GetClaims(user);

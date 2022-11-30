@@ -10,5 +10,6 @@ namespace BlogProject.Core.Services
    public interface IAppUserService:ICrudService<AppUser>
     {
         public AppUser GetByMail(string email);
+        public AppUser GetByUserName(string userName);
     }
 }

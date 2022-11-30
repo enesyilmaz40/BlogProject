@@ -1,5 +1,6 @@
 ﻿
 using BlogProject.Core;
+using BlogProject.Core.Models;
 using BlogProject.Core.Services;
 using BlogProject.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -28,11 +29,23 @@ namespace BlogProject.Controllers
             var values = await _blogService.GetListWithCategory();
             return View(values);
         }
-        //public async Task<IActionResult> BlogReadAll(int id)
-        //{
-        //    ViewBag.i = id;
-        //    var values = _blogService.GetById(id);
-        //    return View(values);
-        //}
+        [AllowAnonymous]
+        [HttpGet]
+        public async Task<IActionResult> BlogReadAll(int id)
+        {
+            ViewBag.i = id;
+            var values = await _blogService.GetById(id);
+            return View(values);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> BlogListByWriter()
+        {
+            var username = User.Identity.Name;
+            var userName = _appUserService.GetByUserName(username).Id;
+            var values = await _blogService.GetListWithCategoryByWriter(userName);
+            return View(values);
+        }
+
     }
 }
