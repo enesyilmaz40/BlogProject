@@ -9,5 +9,6 @@ namespace BlogProject.Core.Services
 {
     public interface ICategoryService : ICrudService<Category>
     {
+        //Task<IEnumerable<Category>> GetCategoryCount();
     }
 }

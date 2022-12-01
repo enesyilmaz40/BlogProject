@@ -37,6 +37,8 @@ namespace BlogProject.Services
             return await _uow.Blogs.GetAllAsync();
         }
 
+    
+
         public async Task<Blog> GetById(int id)
         {
             return await _uow.Blogs.GetByIdAsync(id);

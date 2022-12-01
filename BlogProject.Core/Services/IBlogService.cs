@@ -11,6 +11,8 @@ namespace BlogProject.Core.Services
     {
         Task<IEnumerable<Blog>> GetListWithCategory();
         Task<IEnumerable<Blog>> GetListWithCategoryByWriter(int id);
+        //Task<IEnumerable<Blog>> GetBlogCount();
+        //Task<IEnumerable<Blog>> GetBlogCountByWriter(int writerID);
       
     }
 }

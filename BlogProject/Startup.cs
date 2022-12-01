@@ -1,11 +1,16 @@
 using BlogProject.Core;
+using BlogProject.Core.Models;
 using BlogProject.Core.Services;
 using BlogProject.Core.Utility.Security.Jwt;
 using BlogProject.Data;
 using BlogProject.Services;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -31,6 +36,42 @@ namespace BlogProject
         {
             services.AddControllersWithViews();
             services.AddDbContext<Context>(option => option.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddIdentity<AppUser, AppRole>(x =>
+             {
+                 x.Password.RequireUppercase = false;
+                 x.Password.RequireNonAlphanumeric = false;
+             }).AddEntityFrameworkStores<Context>();
+
+            services.AddSession();
+            services.AddMvc(config =>
+            {
+
+                var policy = new AuthorizationPolicyBuilder()
+                    .RequireAuthenticatedUser()
+                    .Build();
+                config.Filters.Add(new AuthorizeFilter(policy));
+            });
+            services.AddMvc();
+            services.AddAuthentication(
+                CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(x =>
+                {
+                    x.LoginPath = "/Login/Index";
+                });
+
+            services.ConfigureApplicationCookie(options =>
+            {
+                //Cookie settings
+                options.Cookie.HttpOnly = true;
+                options.ExpireTimeSpan = TimeSpan.FromMinutes(150);
+                options.AccessDeniedPath = new PathString("/Login/AccesDenied");
+                options.LoginPath = "/Login/Index/";
+                options.SlidingExpiration = true;
+            });
+
+
+
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IAdminService, AdminService>();
