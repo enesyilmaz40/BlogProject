@@ -9,7 +9,7 @@ namespace BlogProject.Models
     public class UserSignInViewModel
     {
         [Required(ErrorMessage ="Lütfen Kullanıcı Adını Girin")]
-        public string email { get; set; }
+        public string username { get; set; }
         [Required(ErrorMessage ="Lütfen Şifrenizi Girin")]
         public string password { get; set; }
     }

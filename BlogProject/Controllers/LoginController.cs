@@ -27,27 +27,32 @@ namespace BlogProject.Controllers
         [HttpPost]
         public async Task<IActionResult> Index(UserSignInViewModel p)
         {
-            
+
             if (ModelState.IsValid)
             {
-                var result = await _signInManager.PasswordSignInAsync(p.email, p.password, false, true);
+                var result = await _signInManager.PasswordSignInAsync(p.username, p.password, false, true);
                 if (result.Succeeded)
                 {
                     return RedirectToAction("Index", "Dashboard");
                 }
                 else
                 {
+                    
                     return RedirectToAction("Index", "Login");
+
                 }
             }
             return View();
-          
+
         }
         public async Task<IActionResult> LogOut()
         {
             await _signInManager.SignOutAsync();
             return RedirectToAction("Index", "Login");
         }
-
+        public IActionResult AccessDenied()
+        {
+            return View();
+        }
     }
 }

@@ -24,7 +24,7 @@ namespace BlogProject.Controllers
             _categoryService = categoryService;
         }
 
-        [Authorize]
+        
         public IActionResult Index()
         {
 
